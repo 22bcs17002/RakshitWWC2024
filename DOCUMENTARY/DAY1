@@ -1,0 +1,42 @@
+ // PRINT THE SUM OF N NATURAL NUMBERRS
+#include <iostream>
+using namespace std;
+int main() {
+    int a,sum;
+    cout<<"enter n ";
+    cin>>a;
+    for(int i=0;i<=a;i++){
+        sum+=i;
+    }
+    cout << "sum is:"<<sum;
+}
+//CHECK IF THE NO IS PRIME OR NOT
+#include <iostream>
+using namespace std;
+int main() {
+    int num,i;
+    cout<<"enter number "<<endl;
+    cin>>num;
+    if (num <=1){
+        cout<<"not prime"<<endl;
+    }
+        else{
+            for(i=2;i*i<=num;i++){
+                if(num%i==0){
+                cout<<"not prime"<<endl;
+                return 0;
+                }
+            }
+                   cout<<"a prime no"; 
+                
+            }
+        
+        
+    }
+//PRINT YOUR DETAILS(UID,NAME)
+    #include <iostream>
+using namespace std;
+int main() {
+   cout<<"my name is: Rakshit\nmy  UID: 22BCS17002\nmy aim is to become: Developer\ncgpa:7.0\nhome town:fauladpur\narea of interest:java,c++";
+  
+}
