@@ -1,0 +1,107 @@
+#include <iostream>
+#include <vector>
+#include <fstream>
+#include <string>
+
+class InventoryItem {
+public:
+    int itemID;
+    std::string name, category;
+    int quantity, reorderLevel;
+
+    InventoryItem(int id, const std::string& n, const std::string& c, int q, int r)
+        : itemID(id), name(n), category(c), quantity(q), reorderLevel(r) {}
+
+    void display() const {
+        std::cout << "ID: " << itemID << ", Name: " << name
+                  << ", Category: " << category << ", Quantity: " << quantity
+                  << ", Reorder Level: " << reorderLevel << std::endl;
+    }
+};
+
+class InventoryManagementSystem {
+private:
+    std::vector<InventoryItem> inventory;
+
+public:
+    void addItem() {
+        int id, quantity, reorderLevel;
+        std::string name, category;
+        std::cout << "Enter Item ID, Name, Category, Quantity, Reorder Level: ";
+        std::cin >> id;
+        std::cin.ignore();
+        std::getline(std::cin, name);
+        std::getline(std::cin, category);
+        std::cin >> quantity >> reorderLevel;
+        inventory.emplace_back(id, name, category, quantity, reorderLevel);
+        std::cout << "Item added!\n";
+    }
+
+    void updateStock() {
+        int id, newQuantity;
+        std::cout << "Enter Item ID to update: ";
+        std::cin >> id;
+        for (auto& item : inventory) {
+            if (item.itemID == id) {
+                std::cout << "Current Quantity: " << item.quantity << "\nNew Quantity: ";
+                std::cin >> newQuantity;
+                item.quantity = newQuantity;
+                std::cout << "Stock updated!\n";
+                return;
+            }
+        }
+        std::cout << "Item not found!\n";
+    }
+
+    void viewInventory() const {
+        for (const auto& item : inventory) {
+            item.display();
+            if (item.quantity < item.reorderLevel) {
+                std::cout << "ALERT: Low stock for " << item.name << "!\n";
+            }
+        }
+    }
+
+    void searchItem() const {
+        std::string searchTerm;
+        std::cout << "Enter item name or category: ";
+        std::cin.ignore();
+        std::getline(std::cin, searchTerm);
+        for (const auto& item : inventory) {
+            if (item.name == searchTerm || item.category == searchTerm) {
+                item.display();
+            }
+        }
+    }
+
+    void exportInventory() const {
+        std::ofstream outFile("inventory_report.txt");
+        for (const auto& item : inventory) {
+            outFile << item.itemID << "," << item.name << "," << item.category
+                    << "," << item.quantity << "," << item.reorderLevel << "\n";
+        }
+        std::cout << "Inventory exported to inventory_report.txt\n";
+    }
+};
+
+int main() {
+    InventoryManagementSystem ims;
+    int choice;
+    do {
+        std::cout << "\n1. Add Item\n2. Update Stock\n3. View Inventory\n4. Search Item\n5. Export Inventory\n6. Exit\n";
+        std::cout << "Enter your choice: ";
+        std::cin >> choice;
+
+        switch (choice) {
+            case 1: ims.addItem(); break;
+            case 2: ims.updateStock(); break;
+            case 3: ims.viewInventory(); break;
+            case 4: ims.searchItem(); break;
+            case 5: ims.exportInventory(); break;
+            case 6: std::cout << "Exiting.\n"; break;
+            default: std::cout << "Invalid choice!\n"; break;
+        }
+    } while (choice != 6);
+
+    return 0;
+}
